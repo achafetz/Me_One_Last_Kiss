@@ -21,8 +21,8 @@ reshape_long <- function(df, type){
   #aggregate and convert to long
     df <- df %>%
       group_by_at(lst_meta) %>%
-      summarize_at(vars(starts_with("fy2")), funs(sum(., na.rm=TRUE))) %>%
-      ungroup %>%
+      summarize_at(vars(cols), funs(sum(., na.rm=TRUE))) %>%
+      ungroup() %>%
       gather(period, values, starts_with("fy2")) %>%
       filter(values !=0)
 }
