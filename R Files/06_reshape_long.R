@@ -18,13 +18,10 @@ reshape_long <- function(df, type){
       dplyr::select_if(is.character) %>%
       names()
     
-  #combine meta data + values
-    cols_sel <- c(lst_meta, cols)
-    
   #aggregate and convert to long
     df <- df %>%
-      group_by_at(cols_sel) %>%
-      summarize_at(vars(starts_with("fy2")), funs(sum(., na.rm=TRUE))) %>%
+      group_by_at(lst_meta) %>%
+      summarize_at(vars(cols), funs(sum(., na.rm=TRUE))) %>%
       ungroup %>%
       gather(period, values, starts_with("fy2")) %>%
       filter(values !=0)
