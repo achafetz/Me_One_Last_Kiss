@@ -106,12 +106,8 @@
      
 # reshape long separately due to file size
   source(file.path("R Files", "06_reshape_long.R"))
-  results <- reshape_long(data, "results")
-  apr <- reshape_long(data, "apr")
-  targets <- reshape_long(data, "targets")
-#bind together 
-  data_long <- bind_rows(results, apr, targets)
-    rm(results, apr, targets, data, TableauColumns)
+  types <- c("apr", "targets", "results") 
+  df_long <- map_dfc(.x = types, .f = ~ reshape_long(data_mwi, .x))
   
   data_long <- data_long %>%
     mutate(resultsortargets = case_when(str_detect(period, "q\\d$") ~ "Quarterly Results",
